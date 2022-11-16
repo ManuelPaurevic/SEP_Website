@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SocialFul | Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <link href="loginCSS.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+        crossorigin="anonymous"></script>
+
+
+</head>
+
+<body>
+    <section class="vh-100 gradient-custom">
+        <div class="container py-5 h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                    <div class="row">
+                        <div class="col-md">
+                            <img src="images/socialFul-logos_white.png" class="logLogo align-items-lg-center">
+                        </div>
+                        <div class="col-sm button_SO_layout">
+                            <button id="signOutButton" class="btn btn-outline-light btn-lg px-5" type="submit">Sign
+                                Out</button>
+                        </div>
+                    </div>
+
+                    <div class="card bg-dark text-white" style="border-radius: 1rem;">
+                        <div class="card-body p-5 text-center">
+
+                            <div class="form-outline form-white mb-4">
+                                <label class="form-label" for="eventName">Event Name</label>
+                                <input type="text" id="eventName" class="form-control form-control-lg" />
+                            </div>
+
+                            <div class="row">
+                                <div class="col-4 mb-4">
+                                    <label class="form-label" for="eventZipCode">Zip Code</label>
+                                    <input type="textgfhj" id="eventZipCode" class="form-control form-control-lg" />
+                                </div>
+
+                                <div class="col-8 mb-4">
+                                    <label class="form-label" for="eventLocation">Location</label>
+                                    <input type="text" id="eventLocation" class="form-control form-control-lg" />
+                                </div>
+                            </div>
+
+                            <div class="row mb-4">
+                                <div class="col-md">
+                                    <label class="form-label" for="eventDate">Date</label>
+                                    <input type="date" id="eventDate" class="form-control form-control-lg" />
+                                </div>
+
+                                <div class="col-md">
+                                    <label class="form-label" for="eventTime">Time</label>
+                                    <input type="time" id="eventTime" class="form-control form-control-lg" />
+                                </div>
+                            </div>
+
+                            <div class="row mb-4">
+                                <div class="col-md">
+                                    <label class="form-label" for="eventType">Type</label>
+                                    <select class="form-control form-control-lg" id="eventType" name="Type">
+                                        <option value="Sports">Sports</option>
+                                        <option value="Food">Food</option>
+                                        <option value="Music">Music</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md button_SO_layout">
+                                    <button id="addEventButton" class="btn btn-outline-light btn-lg px-5"
+                                        type="submit">Add Event</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+
+<script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.13.0/firebase-app.js";
+    import { getAuth, signOut } from 'https://www.gstatic.com/firebasejs/9.13.0/firebase-auth.js';
+    import { getDatabase, ref, push } from 'https://www.gstatic.com/firebasejs/9.13.0/firebase-database.js';
+    //import { getDatabase } from 'firebase/database';
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyCDP8n1BSdDAjCi3fAr7uDBZ7-Ufig2yPw",
+        authDomain: "se-socialful.firebaseapp.com",
+        databaseURL: "https://se-socialful-default-rtdb.firebaseio.com",
+        projectId: "se-socialful",
+        storageBucket: "se-socialful.appspot.com",
+        messagingSenderId: "706570244681",
+        appId: "1:706570244681:web:e5e9773a1d4418c87fa598"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app)
+    const database = getDatabase(app);
+
+    document.getElementById("addEventButton").addEventListener("click", function () {
+        const eventName = document.getElementById("eventName").value;
+        const zipcode = document.getElementById("eventZipCode").value;
+        const location = document.getElementById("eventLocation").value;
+        const eventAddress = zipcode + ", " + location;
+        const eventDate = document.getElementById("eventDate").value;
+        const eventTime = document.getElementById("eventTime").value;
+        const eventType = document.getElementById("eventType").value;
+
+        function writeUserData(eventName, eventAddress, eventDate, eventTime, eventType) {
+            const db = getDatabase();
+            const dbref = ref(db, 'Communities/' + eventType);
+            const allEvents = ref(db, 'Communities/AllEvents');
+
+            push(dbref, {
+                event_Name: eventName,
+                event_Address: eventAddress,
+                event_Date: eventDate,
+                event_Time: eventTime
+            });
+
+            push(allEvents, {
+                event_Name: eventName,
+                event_Address: eventAddress,
+                event_Date: eventDate,
+                event_Time: eventTime
+            });
+        }
+
+        writeUserData(eventName, eventAddress, eventDate, eventTime, eventType);
+
+        window.alert("Event " + eventName + " has been created!");
+
+    })
+
+
+
+    document.getElementById("signOutButton").addEventListener("click", function () {
+        signOut(auth).then(() => {
+            // Sign-out successful.
+            document.location.href = 'index.html';
+        }).catch((error) => {
+            // An error happened.
+        });
+    })
+
+</script>
+
+</html>

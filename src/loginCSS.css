@@ -1,0 +1,25 @@
+
+.logLogo {
+  height: 140px;
+  width: auto;
+  display:block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.button_SO_layout{
+  margin: auto auto 0;
+  text-align: center;
+}
+
+.gradient-custom {
+    /* fallback for old browsers */
+    background: #cb6b11;
+    
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: -webkit-linear-gradient(to right, rgb(219, 54, 13), rgb(224, 118, 18));
+    
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: linear-gradient(to right, rgba(219, 54, 13), rgba(224, 118, 18))
+    }
+
